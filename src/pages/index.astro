@@ -8,7 +8,7 @@ import {
 import { homeJsonLd } from '../data/seo';
 
 const title = `${book.title}: ${book.subtitle} by ${book.author}`;
-const description = 'A dual-perspective suspense novel set in 1960s–80s small-town Vermont, about friendship, survival and the secrets we never say. Available now in paperback.';
+const description = 'A dual-perspective suspense novel set in 1960s–80s small-town Vermont, about friendship, survival and the secrets we never say. Available now in paperback and hardcover.';
 ---
 
 <Base title={title} description={description} ogType="book" jsonLd={homeJsonLd}>
@@ -62,7 +62,7 @@ const description = 'A dual-perspective suspense novel set in 1960s–80s small-
 
   <section id="buy" class="section buy">
     <h2>Buy the Book</h2>
-    <p class="meta">Available now in {formats.join(' & ').toLowerCase()}</p>
+    <p class="meta">Available now in {formats.join(' and ').toLowerCase()}</p>
     <ul class="retailers">
       {retailers.map((r) => (
         <li>

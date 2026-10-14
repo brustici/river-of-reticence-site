@@ -21,9 +21,11 @@ export const book = {
   // Light content note shown under the blurb. Set to null to hide.
   contentNote: 'Contains depictions of domestic abuse and suicide.',
   details: [
-    { label: 'Format', value: 'Paperback' },
+    { label: 'Format', value: 'Paperback · Hardcover' },
     { label: 'Published', value: '2026' },
     { label: 'ISBN (paperback)', value: '979-8-9939567-1-8' },
+    // TODO: add { label: 'ISBN (hardcover)', value: '...' } once known, plus a
+    // Hardcover workExample in seo.ts (don't add one to the JSON-LD without an ISBN).
     { label: 'Cover art', value: 'Lisa Rustici' },
     { label: 'Editor', value: 'Deborah K. Frontiera' },
   ],
@@ -39,7 +41,7 @@ export const retailers: { id: string; name: string; url: string }[] = [
 ];
 
 // Formats shown in the buy section, e.g. ['Paperback', 'Ebook'].
-export const formats = ['Paperback'];
+export const formats = ['Paperback', 'Hardcover'];
 
 // Short excerpt (the prologue). Keep it short: the full text is an early draft.
 export const excerpt = {
