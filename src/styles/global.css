@@ -101,8 +101,6 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); text-transform: uppercase; letter-sp
 .btn-primary:hover { background: var(--sepia-deep); border-color: var(--sepia-deep); }
 .btn-ghost { color: var(--ink); background: transparent; }
 .btn-ghost:hover { background: var(--ink); color: var(--paper); }
-.btn-disabled { color: var(--sepia); border-color: var(--line); background: var(--card); cursor: default; }
-.btn-disabled small { font-size: 0.75rem; opacity: 0.8; }
 .btn:focus-visible, a:focus-visible { outline: 2px solid var(--sepia); outline-offset: 3px; }
 
 /* Divider */

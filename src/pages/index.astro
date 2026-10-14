@@ -8,12 +8,11 @@ import '@fontsource/barlow-condensed/600.css';
 import '../styles/global.css';
 import cover from '../assets/cover.jpg';
 import {
-  book, retailers, excerpt, reviews, authorInfo, newsletter, contactEmail,
+  book, retailers, formats, excerpt, reviews, authorInfo, newsletter, contactEmail,
 } from '../data/site';
 
 const siteUrl = 'https://riverofreticence.com';
 const description = `${book.title}, ${book.subtitle.toLowerCase()} by ${book.author}. ${book.tagline}`;
-const anyBuyLink = retailers.some((r) => r.url);
 ---
 
 <!doctype html>
@@ -66,7 +65,7 @@ const anyBuyLink = retailers.some((r) => r.url);
           <p class="byline">{book.author}</p>
           <p class="tagline">{book.tagline}</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#buy">{anyBuyLink ? 'Get the book' : 'Coming soon'}</a>
+            <a class="btn btn-primary" href="#buy">Buy now</a>
             <a class="btn btn-ghost" href="#excerpt">Read the prologue</a>
           </div>
         </div>
@@ -105,14 +104,14 @@ const anyBuyLink = retailers.some((r) => r.url);
       )}
 
       <section id="buy" class="section buy">
-        <h2>Get the Book</h2>
-        <p class="meta">{anyBuyLink ? 'Available in paperback from:' : 'Retail links are coming soon.'}</p>
+        <h2>Buy the Book</h2>
+        <p class="meta">Available now in {formats.join(' & ').toLowerCase()}</p>
         <ul class="retailers">
           {retailers.map((r) => (
             <li>
-              {r.url
-                ? <a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{r.name}</a>
-                : <span class="btn btn-disabled" aria-disabled="true">{r.name} <small>soon</small></span>}
+              {r.placeholder
+                ? <a class="btn btn-primary" href={r.url} data-placeholder>{r.name}</a>
+                : <a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{r.name}</a>}
             </li>
           ))}
         </ul>

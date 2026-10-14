@@ -1,5 +1,5 @@
 // All editable site content lives here. Edit this file, then rebuild/redeploy.
-// Anything set to null (or an empty list) is hidden or shown as "coming soon".
+// Anything set to null (or an empty list) is hidden.
 
 export const book = {
   title: 'River of Reticence',
@@ -25,12 +25,18 @@ export const book = {
   ],
 };
 
-// Buy links. url: null renders a disabled "coming soon" button.
-export const retailers: { name: string; url: string | null }[] = [
-  { name: 'Amazon', url: null },
-  { name: 'Bookshop.org', url: null },
-  { name: 'Barnes & Noble', url: null },
+// Buy links. The book is out now.
+// PLACEHOLDER: these URLs are not real yet. Replace each url with the real
+// product page and delete `placeholder: true`. Placeholder buttons look live
+// but just jump to the #buy section.
+export const retailers: { name: string; url: string; placeholder?: boolean }[] = [
+  { name: 'Amazon', url: '#buy', placeholder: true },
+  { name: 'Bookshop.org', url: '#buy', placeholder: true },
+  { name: 'Barnes & Noble', url: '#buy', placeholder: true },
 ];
+
+// Formats shown in the buy section, e.g. ['Paperback', 'Ebook'].
+export const formats = ['Paperback'];
 
 // Short excerpt (the prologue). Keep it short: the full text is an early draft.
 export const excerpt = {
