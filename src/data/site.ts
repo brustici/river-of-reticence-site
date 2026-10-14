@@ -10,7 +10,6 @@ export const book = {
   // Plain-text summary used for meta descriptions and structured data.
   description: 'River of Reticence is a dual-perspective suspense novel by Geri Miller, set in small-town Vermont from 1968 to 1984. Told in two voices, it follows Linnea, a girl who learns that silence is the safest answer, and the rookie officer who finds a town full of unspoken history.',
   genres: ['Suspense', 'Mystery', 'Coming-of-age fiction'],
-  isbn: '9798993956718',
   setting: 'Sugar Maple Heights, Vermont · 1968–1984',
   blurb: [
     'Sugar Maple Heights, Vermont, 1968. Four-year-old Linnea doesn’t know what a nickname is until the girl across the road gives her one. Jett is older, braver and the prettiest girl Linnea has ever seen. She calls her Sprite, and she becomes the one bright thing in a house ruled by a father’s temper and a mother’s silence.',
@@ -22,10 +21,11 @@ export const book = {
   contentNote: 'Contains depictions of domestic abuse and suicide.',
   details: [
     { label: 'Format', value: 'Paperback · Hardcover' },
-    { label: 'Published', value: '2026' },
-    { label: 'ISBN (paperback)', value: '979-8-9939567-1-8' },
-    // TODO: add { label: 'ISBN (hardcover)', value: '...' } once known, plus a
-    // Hardcover workExample in seo.ts (don't add one to the JSON-LD without an ISBN).
+    { label: 'Published', value: 'August 26, 2026' },
+    { label: 'Publisher', value: 'Temperance Hill Press' },
+    { label: 'Pages', value: '352' },
+    { label: 'ISBN (paperback)', value: '979-8-9939567-0-1' },
+    { label: 'ISBN (hardcover)', value: '979-8-9939567-1-8' },
     { label: 'Cover art', value: 'Lisa Rustici' },
     { label: 'Editor', value: 'Deborah K. Frontiera' },
   ],
@@ -34,14 +34,54 @@ export const book = {
 // Buy links. Add a store only once it has a real URL.
 // TODO: the Amazon link is an ISBN search; swap in the direct /dp/ product URL when available.
 // `id` is sent to Google Analytics as the `store` param of the buy_click event.
-export const retailers: { id: string; name: string; url: string }[] = [
-  { id: 'amazon', name: 'Amazon', url: 'https://www.amazon.com/s?k=9798993956718&i=stripbooks&linkCode=qs' },
-  { id: 'barnes_noble', name: 'Barnes & Noble', url: 'https://www.barnesandnoble.com/w/river-of-reticence-geril-miller/1151197976?ean=9798993956718' },
-  { id: 'bookshop', name: 'Bookshop.org', url: 'https://bookshop.org/p/books/river-of-reticence/78f3626dfdf9f576?ean=9798993956718' },
+// `url` is the visible button (paperback, the cheaper entry point);
+// `editions` holds per-format product URLs used in the structured-data offers.
+export const retailers: {
+  id: string; name: string; url: string; editions: Record<EditionKey, string>;
+}[] = [
+  {
+    id: 'amazon', name: 'Amazon',
+    url: 'https://www.amazon.com/s?k=9798993956701&i=stripbooks',
+    editions: {
+      paperback: 'https://www.amazon.com/s?k=9798993956701&i=stripbooks',
+      hardcover: 'https://www.amazon.com/s?k=9798993956718&i=stripbooks&linkCode=qs',
+    },
+  },
+  {
+    id: 'barnes_noble', name: 'Barnes & Noble',
+    url: 'https://www.barnesandnoble.com/w/river-of-reticence-geril-miller/1151197976?ean=9798993956701',
+    editions: {
+      paperback: 'https://www.barnesandnoble.com/w/river-of-reticence-geril-miller/1151197976?ean=9798993956701',
+      hardcover: 'https://www.barnesandnoble.com/w/river-of-reticence-geril-miller/1151197976?ean=9798993956718',
+    },
+  },
+  {
+    id: 'bookshop', name: 'Bookshop.org',
+    url: 'https://bookshop.org/p/books/river-of-reticence/78f3626dfdf9f576?ean=9798993956701',
+    editions: {
+      paperback: 'https://bookshop.org/p/books/river-of-reticence/78f3626dfdf9f576?ean=9798993956701',
+      hardcover: 'https://bookshop.org/p/books/river-of-reticence/78f3626dfdf9f576?ean=9798993956718',
+    },
+  },
 ];
 
-// Formats shown in the buy section, e.g. ['Paperback', 'Ebook'].
-export const formats = ['Paperback', 'Hardcover'];
+// Editions (verified on Bookshop.org). Prices feed structured data only;
+// they are not shown on the page.
+export type EditionKey = 'paperback' | 'hardcover';
+export const editions: {
+  key: EditionKey; format: 'Paperback' | 'Hardcover'; isbn: string; price: string;
+}[] = [
+  { key: 'paperback', format: 'Paperback', isbn: '9798993956701', price: '21.99' },
+  { key: 'hardcover', format: 'Hardcover', isbn: '9798993956718', price: '34.99' },
+];
+export const publication = {
+  publisher: 'Temperance Hill Press',
+  datePublished: '2026-08-26',
+  numberOfPages: 352,
+};
+
+// Formats shown in the buy section.
+export const formats = editions.map((e) => e.format);
 
 // Short excerpt (the prologue). Keep it short: the full text is an early draft.
 export const excerpt = {

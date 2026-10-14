@@ -1,6 +1,6 @@
 // schema.org structured data (JSON-LD). Entities are linked by @id so search
 // engines and AI assistants can tie the book, the paperback and the author together.
-import { book, retailers, authorInfo } from './site';
+import { book, retailers, authorInfo, editions, publication } from './site';
 
 export const SITE_URL = 'https://riverofreticence.com';
 export const ABOUT_URL = `${SITE_URL}/about/`;
@@ -18,6 +18,7 @@ export const ids = {
   website: `${SITE_URL}/#website`,
   book: `${SITE_URL}/#book`,
   paperback: `${SITE_URL}/#paperback`,
+  hardcover: `${SITE_URL}/#hardcover`,
   author: `${ABOUT_URL}#geri-miller`,
 };
 
@@ -53,30 +54,36 @@ export const homeJsonLd = {
       editor: { '@type': 'Person', name: 'Deborah K. Frontiera' },
       illustrator: { '@type': 'Person', name: 'Lisa Rustici' },
       mainEntityOfPage: { '@id': ids.website },
-      workExample: {
+      datePublished: publication.datePublished,
+      publisher: { '@type': 'Organization', name: publication.publisher },
+      workExample: editions.map((e) => ({
         '@type': 'Book',
-        '@id': ids.paperback,
+        '@id': ids[e.key],
         name: book.title,
-        bookFormat: 'https://schema.org/Paperback',
-        isbn: book.isbn,
+        bookFormat: `https://schema.org/${e.format}`,
+        isbn: e.isbn,
         inLanguage: 'en-US',
-        datePublished: '2026',
+        datePublished: publication.datePublished,
+        numberOfPages: publication.numberOfPages,
+        publisher: { '@type': 'Organization', name: publication.publisher },
         author: { '@id': ids.author },
         image: COVER_URL,
         offers: retailers.map((r) => ({
           '@type': 'Offer',
-          url: r.url,
+          url: r.editions[e.key],
+          price: e.price,
+          priceCurrency: 'USD',
           availability: 'https://schema.org/InStock',
           itemCondition: 'https://schema.org/NewCondition',
           seller: { '@type': 'Organization', name: r.name },
         })),
         potentialAction: retailers.map((r) => ({
           '@type': 'BuyAction',
-          name: `Buy on ${r.name}`,
-          target: r.url,
+          name: `Buy the ${e.format.toLowerCase()} on ${r.name}`,
+          target: r.editions[e.key],
           seller: { '@type': 'Organization', name: r.name },
         })),
-      },
+      })),
     },
   ],
 };
