@@ -27,10 +27,10 @@ export const book = {
 
 // Buy links. Add a store only once it has a real URL, e.g.
 //   { name: 'Bookshop.org', url: 'https://bookshop.org/p/books/...' },
-//   { name: 'Barnes & Noble', url: 'https://www.barnesandnoble.com/w/...' },
 // TODO: the Amazon link is an ISBN search; swap in the direct /dp/ product URL when available.
 export const retailers: { name: string; url: string }[] = [
   { name: 'Amazon', url: 'https://www.amazon.com/s?k=9798993956718&i=stripbooks&linkCode=qs' },
+  { name: 'Barnes & Noble', url: 'https://www.barnesandnoble.com/w/river-of-reticence-geril-miller/1151197976?ean=9798993956718' },
 ];
 
 // Formats shown in the buy section, e.g. ['Paperback', 'Ebook'].
