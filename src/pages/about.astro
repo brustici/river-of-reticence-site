@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import cover from '../assets/cover.jpg';
+import { book, retailers, authorInfo } from '../data/site';
+import { aboutJsonLd } from '../data/seo';
+
+// PLACEHOLDER: author photo. Add src/assets/author.jpg (and public/author.jpg for
+// structured data), set authorInfo.photo = true, then this picks it up.
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/author.jpg', { eager: true });
+const photo = authorInfo.photo ? Object.values(photos)[0]?.default : undefined;
+
+const title = `About ${authorInfo.name}, Author of ${book.title}`;
+const description = `${authorInfo.name} is the author of ${book.title}, a literary coming-of-age novel set in small-town Vermont. Read her bio and find out where to buy the book.`;
+---
+
+<Base title={title} description={description} ogType="profile" jsonLd={aboutJsonLd}>
+  <section class="section prose-section about-page">
+    <p class="eyebrow">About the Author</p>
+    <h1>{authorInfo.name}</h1>
+    {photo && <Image src={photo} alt={`Portrait of ${authorInfo.name}`} width={320} class="author-photo" />}
+    {authorInfo.bio.map((p) => <p>{p}</p>)}
+    <p class="dedication">“{authorInfo.dedication}”</p>
+  </section>
+
+  <section class="section about-book">
+    <a href="/" class="about-book-cover">
+      <Image src={cover} alt={`Cover of ${book.title}`} widths={[200, 400]} sizes="200px" />
+    </a>
+    <div>
+      <p class="eyebrow">Her novel</p>
+      <h2><a href="/">{book.title}</a></h2>
+      <p>{book.tagline}</p>
+      <ul class="retailers">
+        {retailers.map((r) => (
+          <li><a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{r.name}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

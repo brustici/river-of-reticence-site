@@ -1,0 +1,74 @@
+---
+import '@fontsource/playfair-display/700.css';
+import '@fontsource/eb-garamond/400.css';
+import '@fontsource/eb-garamond/400-italic.css';
+import '@fontsource/barlow-condensed/500.css';
+import '@fontsource/barlow-condensed/600.css';
+import '../styles/global.css';
+import { book, contactEmail } from '../data/site';
+import { SITE_URL, SHARE_IMAGE } from '../data/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: 'website' | 'book' | 'profile';
+  jsonLd: object;
+}
+
+const { title, description, ogType = 'website', jsonLd } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#efe4d7" />
+
+    <meta property="og:site_name" content={book.title} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={SHARE_IMAGE.url} />
+    <meta property="og:image:width" content={String(SHARE_IMAGE.width)} />
+    <meta property="og:image:height" content={String(SHARE_IMAGE.height)} />
+    <meta property="og:image:alt" content={SHARE_IMAGE.alt} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={SHARE_IMAGE.url} />
+    <meta name="twitter:image:alt" content={SHARE_IMAGE.alt} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="nav-brand" href="/">{book.title}</a>
+      <nav aria-label="Main">
+        <a href="/#about">The Book</a>
+        <a href="/#excerpt">Excerpt</a>
+        <a href="/about/">Author</a>
+        <a href="/#buy" class="nav-cta">Buy</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <p class="footer-title">{book.title}</p>
+      <p><a href="/">The Book</a> · <a href="/about/">About Geri Miller</a></p>
+      {contactEmail && <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>}
+      <p>© {new Date().getFullYear()} {book.author}. All rights reserved. Cover art © Lisa Rustici.</p>
+    </footer>
+  </body>
+</html>

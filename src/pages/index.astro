@@ -1,142 +1,91 @@
 ---
 import { Image } from 'astro:assets';
-import '@fontsource/playfair-display/700.css';
-import '@fontsource/eb-garamond/400.css';
-import '@fontsource/eb-garamond/400-italic.css';
-import '@fontsource/barlow-condensed/500.css';
-import '@fontsource/barlow-condensed/600.css';
-import '../styles/global.css';
+import Base from '../layouts/Base.astro';
 import cover from '../assets/cover.jpg';
 import {
-  book, retailers, formats, excerpt, reviews, authorInfo, newsletter, contactEmail,
+  book, retailers, formats, excerpt, reviews, authorInfo, newsletter,
 } from '../data/site';
+import { homeJsonLd } from '../data/seo';
 
-const siteUrl = 'https://riverofreticence.com';
-const description = `${book.title}, ${book.subtitle.toLowerCase()} by ${book.author}. ${book.tagline}`;
+const title = `${book.title}: ${book.subtitle} by ${book.author}`;
+const description = 'A literary coming-of-age novel set in 1960s–80s small-town Vermont, about friendship, survival and the secrets we never say. Available now in paperback.';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{book.title} · {book.subtitle} by {book.author}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={siteUrl + '/'} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta property="og:type" content="book" />
-    <meta property="og:title" content={`${book.title} by ${book.author}`} />
-    <meta property="og:description" content={book.tagline} />
-    <meta property="og:url" content={siteUrl + '/'} />
-    <meta property="og:image" content={siteUrl + '/og-cover.jpg'} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#efe4d7" />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Book',
-      name: book.title,
-      author: { '@type': 'Person', name: book.author },
-      isbn: '9798993956718',
-      bookFormat: 'https://schema.org/Paperback',
-      genre: 'Literary fiction',
-      image: siteUrl + '/og-cover.jpg',
-      url: siteUrl + '/',
-    })} />
-  </head>
-  <body>
-    <header class="nav">
-      <a class="nav-brand" href="#top">{book.title}</a>
-      <nav aria-label="Sections">
-        <a href="#about">The Book</a>
-        <a href="#excerpt">Excerpt</a>
-        <a href="#author">Author</a>
-        <a href="#buy" class="nav-cta">Buy</a>
-      </nav>
-    </header>
+<Base title={title} description={description} ogType="book" jsonLd={homeJsonLd}>
+  <section class="hero">
+    <div class="hero-cover">
+      <Image src={cover} alt={`Cover of ${book.title} by ${book.author}: a sepia pencil drawing of a long-haired girl sitting on a fallen log beside a wooded river, a backpack at her feet.`} widths={[360, 540, 720]} sizes="(max-width: 760px) 70vw, 360px" loading="eager" />
+    </div>
+    <div class="hero-text">
+      <p class="eyebrow">{book.subtitle}</p>
+      <h1>{book.title}</h1>
+      <p class="byline">{book.author}</p>
+      <p class="tagline">{book.tagline}</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#buy">Buy now</a>
+        <a class="btn btn-ghost" href="#excerpt">Read the prologue</a>
+      </div>
+    </div>
+  </section>
 
-    <main id="top">
-      <section class="hero">
-        <div class="hero-cover">
-          <Image src={cover} alt={`Cover of ${book.title} by ${book.author}: a sepia pencil drawing of a long-haired girl sitting on a fallen log beside a wooded river, a backpack at her feet.`} widths={[360, 540, 720]} sizes="(max-width: 760px) 70vw, 360px" loading="eager" />
-        </div>
-        <div class="hero-text">
-          <p class="eyebrow">{book.subtitle}</p>
-          <h1>{book.title}</h1>
-          <p class="byline">{book.author}</p>
-          <p class="tagline">{book.tagline}</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#buy">Buy now</a>
-            <a class="btn btn-ghost" href="#excerpt">Read the prologue</a>
-          </div>
-        </div>
-      </section>
+  <div class="rule" aria-hidden="true"><span>❦</span></div>
 
-      <div class="rule" aria-hidden="true"><span>❦</span></div>
+  <section id="about" class="section prose-section">
+    <h2>About the Book</h2>
+    <p class="meta">{book.genre} · {book.setting}</p>
+    {book.blurb.map((p, i) => <p class={i === 0 ? 'lede' : undefined}>{p}</p>)}
+    {book.contentNote && <p class="content-note">Content note: {book.contentNote}</p>}
+  </section>
 
-      <section id="about" class="section prose-section">
-        <h2>About the Book</h2>
-        <p class="meta">{book.genre} · {book.setting}</p>
-        {book.blurb.map((p, i) => <p class={i === 0 ? 'lede' : undefined}>{p}</p>)}
-        {book.contentNote && <p class="content-note">Content note: {book.contentNote}</p>}
-      </section>
+  <section id="excerpt" class="section excerpt">
+    <div class="excerpt-card">
+      <p class="eyebrow">Excerpt</p>
+      <h2>{excerpt.heading}</h2>
+      <p class="place">{excerpt.place}</p>
+      {excerpt.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
 
-      <section id="excerpt" class="section excerpt">
-        <div class="excerpt-card">
-          <p class="eyebrow">Excerpt</p>
-          <h2>{excerpt.heading}</h2>
-          <p class="place">{excerpt.place}</p>
-          {excerpt.paragraphs.map((p) => <p>{p}</p>)}
-        </div>
-      </section>
+  {reviews.length > 0 && (
+    <section id="praise" class="section praise">
+      <h2>Praise</h2>
+      <div class="quotes">
+        {reviews.map((r) => (
+          <figure>
+            <blockquote>“{r.quote}”</blockquote>
+            <figcaption>{r.source}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
 
-      {reviews.length > 0 && (
-        <section id="praise" class="section praise">
-          <h2>Praise</h2>
-          <div class="quotes">
-            {reviews.map((r) => (
-              <figure>
-                <blockquote>“{r.quote}”</blockquote>
-                <figcaption>{r.source}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
-      )}
+  <section id="buy" class="section buy">
+    <h2>Buy the Book</h2>
+    <p class="meta">Available now in {formats.join(' & ').toLowerCase()}</p>
+    <ul class="retailers">
+      {retailers.map((r) => (
+        <li>
+          <a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{retailers.length === 1 ? `Buy on ${r.name}` : r.name}</a>
+        </li>
+      ))}
+    </ul>
+    <dl class="details">
+      {book.details.map((d) => (<div><dt>{d.label}</dt><dd>{d.value}</dd></div>))}
+    </dl>
+  </section>
 
-      <section id="buy" class="section buy">
-        <h2>Buy the Book</h2>
-        <p class="meta">Available now in {formats.join(' & ').toLowerCase()}</p>
-        <ul class="retailers">
-          {retailers.map((r) => (
-            <li>
-              <a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{retailers.length === 1 ? `Buy on ${r.name}` : r.name}</a>
-            </li>
-          ))}
-        </ul>
-        <dl class="details">
-          {book.details.map((d) => (<div><dt>{d.label}</dt><dd>{d.value}</dd></div>))}
-        </dl>
-      </section>
+  <section id="author" class="section prose-section author">
+    <h2>About the Author</h2>
+    <p>{authorInfo.teaser}</p>
+    <p><a class="btn btn-ghost" href="/about/">More about Geri Miller</a></p>
+  </section>
 
-      <section id="author" class="section prose-section author">
-        <h2>About the Author</h2>
-        {authorInfo.bio.map((p) => <p>{p}</p>)}
-        <p class="dedication">“{authorInfo.dedication}”</p>
-      </section>
-
-      {newsletter.url && (
-        <section id="newsletter" class="section newsletter">
-          <h2>Stay in Touch</h2>
-          <p>{newsletter.blurb}</p>
-          <a class="btn btn-primary" href={newsletter.url} target="_blank" rel="noopener">Join the newsletter</a>
-        </section>
-      )}
-    </main>
-
-    <footer class="footer">
-      <p class="footer-title">{book.title}</p>
-      {contactEmail && <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>}
-      <p>© {new Date().getFullYear()} {book.author}. All rights reserved. Cover art © Lisa Rustici.</p>
-    </footer>
-  </body>
-</html>
+  {newsletter.url && (
+    <section id="newsletter" class="section newsletter">
+      <h2>Stay in Touch</h2>
+      <p>{newsletter.blurb}</p>
+      <a class="btn btn-primary" href={newsletter.url} target="_blank" rel="noopener">Join the newsletter</a>
+    </section>
+  )}
+</Base>

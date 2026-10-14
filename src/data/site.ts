@@ -7,6 +7,10 @@ export const book = {
   author: 'Geri Miller',
   tagline: 'Some secrets are carried for a lifetime. Some are carried by the river.',
   genre: 'Literary fiction · Coming of age',
+  // Plain-text summary used for meta descriptions and structured data.
+  description: 'River of Reticence is a literary coming-of-age novel by Geri Miller, set in small-town Vermont from 1968 to 1984. Told in two voices, it follows Linnea, a girl who learns that silence is the safest answer, and the rookie officer who finds a town full of unspoken history.',
+  genres: ['Literary fiction', 'Coming-of-age fiction'],
+  isbn: '9798993956718',
   setting: 'Sugar Maple Heights, Vermont · 1968–1984',
   blurb: [
     'Sugar Maple Heights, Vermont, 1968. Four-year-old Linnea doesn’t know what a nickname is until the girl across the road gives her one. Jett is older, braver and the prettiest girl Linnea has ever seen. She calls her Sprite, and she becomes the one bright thing in a house ruled by a father’s temper and a mother’s silence.',
@@ -50,10 +54,21 @@ export const excerpt = {
 export const reviews: { quote: string; source: string }[] = [];
 
 export const authorInfo = {
-  // PLACEHOLDER: replace with Geri's real bio and add a photo at src/assets/author.jpg.
+  name: 'Geri Miller',
+  // PLACEHOLDER: short teaser shown on the homepage, linking to /about.
+  teaser: 'Geri Miller is the author of River of Reticence, a novel set in small-town Vermont.',
+  // PLACEHOLDER: replace with Geri's real full bio (shown on /about).
   bio: [
     'Geri Miller is the author of River of Reticence. A fuller bio is on its way.',
   ],
+  // PLACEHOLDER: add a photo at src/assets/author.jpg and set photo: true
+  // (the /about page and Person structured data will pick it up).
+  photo: false,
+  // PLACEHOLDER: Geri's official profile URLs, used as schema.org `sameAs`
+  // so search engines and AI assistants can connect her identity. Add only
+  // real URLs, e.g. Amazon Author page, Goodreads author page, Instagram,
+  // Facebook. Do not guess.
+  sameAs: [] as string[],
   dedication: 'In memory of my mom, the one true Jett.',
 };
 
