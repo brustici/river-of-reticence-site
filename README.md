@@ -21,3 +21,16 @@ Anything set to `null` (or an empty list) is hidden or shown as "coming soon".
 | `npm run preview` | Preview the build locally                |
 
 Deploy: any static host. Build command `npm run build`, output directory `dist`, Node 22+.
+
+## Hosting
+
+GitHub Pages, deployed by `.github/workflows/deploy.yml` on every push to `main`.
+Custom domain is set by `public/CNAME`. DNS stays at Namecheap:
+
+| Type  | Host | Value                |
+| ----- | ---- | -------------------- |
+| A     | @    | 185.199.108.153      |
+| A     | @    | 185.199.109.153      |
+| A     | @    | 185.199.110.153      |
+| A     | @    | 185.199.111.153      |
+| CNAME | www  | brustici.github.io.  |
