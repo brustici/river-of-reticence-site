@@ -36,7 +36,7 @@ const description = `${book.title}, ${book.subtitle.toLowerCase()} by ${book.aut
       '@type': 'Book',
       name: book.title,
       author: { '@type': 'Person', name: book.author },
-      isbn: '9798993956701',
+      isbn: '9798993956718',
       bookFormat: 'https://schema.org/Paperback',
       genre: 'Literary fiction',
       image: siteUrl + '/og-cover.jpg',
@@ -109,9 +109,7 @@ const description = `${book.title}, ${book.subtitle.toLowerCase()} by ${book.aut
         <ul class="retailers">
           {retailers.map((r) => (
             <li>
-              {r.placeholder
-                ? <a class="btn btn-primary" href={r.url} data-placeholder>{r.name}</a>
-                : <a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{r.name}</a>}
+              <a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{retailers.length === 1 ? `Buy on ${r.name}` : r.name}</a>
             </li>
           ))}
         </ul>

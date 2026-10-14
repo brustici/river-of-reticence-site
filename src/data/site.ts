@@ -19,20 +19,18 @@ export const book = {
   details: [
     { label: 'Format', value: 'Paperback' },
     { label: 'Published', value: '2026' },
-    { label: 'ISBN', value: '979-8-9939567-0-1' },
+    { label: 'ISBN (paperback)', value: '979-8-9939567-1-8' },
     { label: 'Cover art', value: 'Lisa Rustici' },
     { label: 'Editor', value: 'Deborah K. Frontiera' },
   ],
 };
 
-// Buy links. The book is out now.
-// PLACEHOLDER: these URLs are not real yet. Replace each url with the real
-// product page and delete `placeholder: true`. Placeholder buttons look live
-// but just jump to the #buy section.
-export const retailers: { name: string; url: string; placeholder?: boolean }[] = [
-  { name: 'Amazon', url: '#buy', placeholder: true },
-  { name: 'Bookshop.org', url: '#buy', placeholder: true },
-  { name: 'Barnes & Noble', url: '#buy', placeholder: true },
+// Buy links. Add a store only once it has a real URL, e.g.
+//   { name: 'Bookshop.org', url: 'https://bookshop.org/p/books/...' },
+//   { name: 'Barnes & Noble', url: 'https://www.barnesandnoble.com/w/...' },
+// TODO: the Amazon link is an ISBN search; swap in the direct /dp/ product URL when available.
+export const retailers: { name: string; url: string }[] = [
+  { name: 'Amazon', url: 'https://www.amazon.com/s?k=9798993956718&i=stripbooks&linkCode=qs' },
 ];
 
 // Formats shown in the buy section, e.g. ['Paperback', 'Ebook'].
