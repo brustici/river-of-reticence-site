@@ -6,10 +6,10 @@ export const book = {
   subtitle: 'A Novel',
   author: 'Geri Miller',
   tagline: 'Some secrets are carried for a lifetime. Some are carried by the river.',
-  genre: 'Literary fiction · Coming of age',
+  genre: 'Suspense · Dual-perspective mystery',
   // Plain-text summary used for meta descriptions and structured data.
-  description: 'River of Reticence is a literary coming-of-age novel by Geri Miller, set in small-town Vermont from 1968 to 1984. Told in two voices, it follows Linnea, a girl who learns that silence is the safest answer, and the rookie officer who finds a town full of unspoken history.',
-  genres: ['Literary fiction', 'Coming-of-age fiction'],
+  description: 'River of Reticence is a dual-perspective suspense novel by Geri Miller, set in small-town Vermont from 1968 to 1984. Told in two voices, it follows Linnea, a girl who learns that silence is the safest answer, and the rookie officer who finds a town full of unspoken history.',
+  genres: ['Suspense', 'Mystery', 'Coming-of-age fiction'],
   isbn: '9798993956718',
   setting: 'Sugar Maple Heights, Vermont · 1968–1984',
   blurb: [
@@ -55,12 +55,18 @@ export const reviews: { quote: string; source: string }[] = [];
 
 export const authorInfo = {
   name: 'Geri Miller',
-  // PLACEHOLDER: short teaser shown on the homepage, linking to /about.
-  teaser: 'Geri Miller is the author of River of Reticence, a novel set in small-town Vermont.',
-  // PLACEHOLDER: replace with Geri's real full bio (shown on /about).
+  // Homepage teaser (first two sentences of the bio), linking to /about.
+  teaser: 'Geri Miller lives in Michigan’s Upper Peninsula with her husband of forty-one years. A lifelong mystery lover inspired by Nancy Drew, she now writes suspense shaped by the rugged beauty of the north and the complexities of her upbringing.',
+  // Full bio, from the book's About the Author page (shown on /about).
   bio: [
-    'Geri Miller is the author of River of Reticence. A fuller bio is on its way.',
+    'Geri Miller lives in Michigan’s Upper Peninsula with her husband of forty-one years. A lifelong mystery lover inspired by Nancy Drew, she now writes suspense shaped by the rugged beauty of the north and the complexities of her upbringing.',
+    'A former runner who has always loved the water, she began writing three years ago, pursuing her long-held dream of crafting a dual-perspective mystery and drawing her stories from the resilience of her own childhood. She is a proud member of the Upper Peninsula Publishers and Authors Association (UPPAA).',
+    'When she isn’t writing, she enjoys fishing, making maple syrup, and spending time on the St. Mary’s River with family and friends.',
   ],
+  // Short bio for structured data (schema.org Person description).
+  shortBio: 'Geri Miller is a suspense author from Michigan’s Upper Peninsula and a member of the Upper Peninsula Publishers and Authors Association. She is the author of River of Reticence, a dual-perspective mystery.',
+  location: { region: 'Upper Peninsula, Michigan', state: 'MI', country: 'US' },
+  memberOf: { name: 'Upper Peninsula Publishers and Authors Association', alternateName: 'UPPAA', url: 'https://www.uppaa.org/' },
   // PLACEHOLDER: add a photo at src/assets/author.jpg and set photo: true
   // (the /about page and Person structured data will pick it up).
   photo: false,

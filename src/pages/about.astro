@@ -11,7 +11,7 @@ const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/author.jp
 const photo = authorInfo.photo ? Object.values(photos)[0]?.default : undefined;
 
 const title = `About ${authorInfo.name}, Author of ${book.title}`;
-const description = `${authorInfo.name} is the author of ${book.title}, a literary coming-of-age novel set in small-town Vermont. Read her bio and find out where to buy the book.`;
+const description = `${authorInfo.name} is the author of ${book.title}, a dual-perspective suspense novel set in small-town Vermont. A mystery lover from Michigan’s Upper Peninsula, she writes stories shaped by the north.`;
 ---
 
 <Base title={title} description={description} ogType="profile" jsonLd={aboutJsonLd}>

@@ -100,7 +100,16 @@ export const aboutJsonLd = {
       name: authorInfo.name,
       url: ABOUT_URL,
       jobTitle: 'Author',
-      description: authorInfo.bio.join(' '),
+      description: authorInfo.shortBio,
+      address: {
+        '@type': 'PostalAddress',
+        addressRegion: authorInfo.location.state,
+        addressCountry: authorInfo.location.country,
+        description: authorInfo.location.region,
+      },
+      homeLocation: { '@type': 'Place', name: `${authorInfo.location.region}, United States` },
+      memberOf: { '@type': 'Organization', ...authorInfo.memberOf },
+      knowsAbout: ['Mystery fiction', 'Suspense fiction'],
       ...(authorInfo.photo ? { image: AUTHOR_PHOTO_URL } : {}),
       // PLACEHOLDER: filled from authorInfo.sameAs in site.ts (empty until real profile URLs exist).
       sameAs: authorInfo.sameAs,

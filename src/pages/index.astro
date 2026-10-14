@@ -8,7 +8,7 @@ import {
 import { homeJsonLd } from '../data/seo';
 
 const title = `${book.title}: ${book.subtitle} by ${book.author}`;
-const description = 'A literary coming-of-age novel set in 1960s–80s small-town Vermont, about friendship, survival and the secrets we never say. Available now in paperback.';
+const description = 'A dual-perspective suspense novel set in 1960s–80s small-town Vermont, about friendship, survival and the secrets we never say. Available now in paperback.';
 ---
 
 <Base title={title} description={description} ogType="book" jsonLd={homeJsonLd}>
@@ -78,7 +78,7 @@ const description = 'A literary coming-of-age novel set in 1960s–80s small-tow
   <section id="author" class="section prose-section author">
     <h2>About the Author</h2>
     <p>{authorInfo.teaser}</p>
-    <p><a class="btn btn-ghost" href="/about/">More about Geri Miller</a></p>
+    <p><a class="btn btn-ghost" href="/about/" aria-label="Read more about Geri Miller">Read more</a></p>
   </section>
 
   {newsletter.url && (
