@@ -66,7 +66,7 @@ const description = 'A dual-perspective suspense novel set in 1960s–80s small-
     <ul class="retailers">
       {retailers.map((r) => (
         <li>
-          <a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{retailers.length === 1 ? `Buy on ${r.name}` : r.name}</a>
+          <a class="btn btn-primary" href={r.url} data-store={r.id} target="_blank" rel="noopener">{retailers.length === 1 ? `Buy on ${r.name}` : r.name}</a>
         </li>
       ))}
     </ul>

@@ -33,7 +33,7 @@ const description = `${authorInfo.name} is the author of ${book.title}, a dual-p
       <p>{book.tagline}</p>
       <ul class="retailers">
         {retailers.map((r) => (
-          <li><a class="btn btn-primary" href={r.url} target="_blank" rel="noopener">{r.name}</a></li>
+          <li><a class="btn btn-primary" href={r.url} data-store={r.id} target="_blank" rel="noopener">{r.name}</a></li>
         ))}
       </ul>
     </div>

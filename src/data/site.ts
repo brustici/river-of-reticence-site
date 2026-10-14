@@ -31,10 +31,11 @@ export const book = {
 
 // Buy links. Add a store only once it has a real URL.
 // TODO: the Amazon link is an ISBN search; swap in the direct /dp/ product URL when available.
-export const retailers: { name: string; url: string }[] = [
-  { name: 'Amazon', url: 'https://www.amazon.com/s?k=9798993956718&i=stripbooks&linkCode=qs' },
-  { name: 'Barnes & Noble', url: 'https://www.barnesandnoble.com/w/river-of-reticence-geril-miller/1151197976?ean=9798993956718' },
-  { name: 'Bookshop.org', url: 'https://bookshop.org/p/books/river-of-reticence/78f3626dfdf9f576?ean=9798993956718' },
+// `id` is sent to Google Analytics as the `store` param of the buy_click event.
+export const retailers: { id: string; name: string; url: string }[] = [
+  { id: 'amazon', name: 'Amazon', url: 'https://www.amazon.com/s?k=9798993956718&i=stripbooks&linkCode=qs' },
+  { id: 'barnes_noble', name: 'Barnes & Noble', url: 'https://www.barnesandnoble.com/w/river-of-reticence-geril-miller/1151197976?ean=9798993956718' },
+  { id: 'bookshop', name: 'Bookshop.org', url: 'https://bookshop.org/p/books/river-of-reticence/78f3626dfdf9f576?ean=9798993956718' },
 ];
 
 // Formats shown in the buy section, e.g. ['Paperback', 'Ebook'].
