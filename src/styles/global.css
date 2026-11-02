@@ -7,6 +7,8 @@
   --sepia: #7b5a43;
   --sepia-deep: #4f3828;
   --line: #d9c7b4;
+  --accent: #8a3b22;
+  --accent-deep: #6b2c19;
   --serif-display: 'Playfair Display', Georgia, serif;
   --serif: 'EB Garamond', Georgia, serif;
   --condensed: 'Barlow Condensed', 'Arial Narrow', sans-serif;
@@ -99,6 +101,8 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); text-transform: uppercase; letter-sp
 }
 .btn-primary { background: var(--ink); color: var(--paper); }
 .btn-primary:hover { background: var(--sepia-deep); border-color: var(--sepia-deep); }
+.btn-accent { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.btn-accent:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
 .btn-ghost { color: var(--ink); background: transparent; }
 .btn-ghost:hover { background: var(--ink); color: var(--paper); }
 .btn:focus-visible, a:focus-visible { outline: 2px solid var(--sepia); outline-offset: 3px; }
@@ -153,7 +157,8 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); text-transform: uppercase; letter-sp
   border-top: 1px solid var(--line);
 }
 .about-book h2 a { color: var(--ink); text-decoration: none; }
-.about-book .retailers { justify-content: flex-start; margin: 1rem 0 0; }
+.about-book .retailers { justify-content: flex-start; margin: 0; }
+.about-book .buy-heading { font-size: 1.1rem; margin: 1.25rem 0 0.6rem; }
 .about-book-cover img { box-shadow: 0 10px 24px -10px rgb(60 40 25 / 0.45); border-radius: 2px; }
 @media (max-width: 560px) {
   .about-book { grid-template-columns: 1fr; justify-items: center; text-align: center; }
