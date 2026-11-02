@@ -31,6 +31,17 @@ export const book = {
   ],
 };
 
+// Direct-from-author sales (IngramSpark storefront), shown above the retailers.
+// `id` is sent to Google Analytics as the `store` param of the buy_click event.
+export const directSale = {
+  heading: 'Buy Direct From Author',
+  links: [
+    { id: 'direct_hardcover', label: 'Hardcover', url: 'https://shop.ingramspark.com/b/084?params=NdJoSQGLI14iReXaZDy0eWs8NZAnT8id8hWnxlWwwmm' },
+    { id: 'direct_paperback', label: 'Paperback', url: 'https://shop.ingramspark.com/b/084?params=KWOUIjWFpYMlUeZ5bbA7U9eHbPPrU367fWesefO2ZAZ' },
+  ],
+  retailersHeading: 'Or Order from Your Favorite Book Store',
+};
+
 // Buy links. Add a store only once it has a real URL.
 // TODO: the Amazon link is an ISBN search; swap in the direct /dp/ product URL when available.
 // `id` is sent to Google Analytics as the `store` param of the buy_click event.

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import cover from '../assets/cover.jpg';
 import {
-  book, retailers, formats, excerpt, reviews, authorInfo, newsletter,
+  book, directSale, retailers, formats, excerpt, reviews, authorInfo, newsletter,
 } from '../data/site';
 import { homeJsonLd } from '../data/seo';
 
@@ -63,6 +63,15 @@ const description = 'A dual-perspective suspense novel set in 1960s–80s small-
   <section id="buy" class="section buy">
     <h2>Buy the Book</h2>
     <p class="meta">Available now in {formats.join(' and ').toLowerCase()}</p>
+    <h3 class="buy-heading">{directSale.heading}</h3>
+    <ul class="retailers">
+      {directSale.links.map((l) => (
+        <li>
+          <a class="btn btn-primary" href={l.url} data-store={l.id} target="_blank" rel="noopener">{l.label}</a>
+        </li>
+      ))}
+    </ul>
+    <h3 class="buy-heading">{directSale.retailersHeading}</h3>
     <ul class="retailers">
       {retailers.map((r) => (
         <li>
