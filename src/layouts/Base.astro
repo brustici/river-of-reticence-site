@@ -67,6 +67,17 @@ const canonical = new URL(Astro.url.pathname, SITE_URL).href;
           transport_type: 'beacon'
         });
       });
+
+      // GA4 `review_click` event for "leave a review" buttons (data-review).
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[data-review]');
+        if (!a) return;
+        gtag('event', 'review_click', {
+          site: a.getAttribute('data-review'),
+          link_url: a.href,
+          transport_type: 'beacon'
+        });
+      });
     </script>
   </head>
   <body>

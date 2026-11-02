@@ -136,6 +136,27 @@ h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); text-transform: uppercase; letter-sp
 .details dt { font-size: 0.8rem; color: var(--sepia); }
 .details dd { margin: 0; font-size: 1.05rem; }
 
+.loved { background: var(--cream); border-block: 1px solid var(--line); }
+.loved-inner { max-width: 36rem; margin: 0 auto; text-align: center; }
+.loved-intro { margin: 0 0 1.75rem; color: var(--ink-soft); }
+.note-form { display: grid; gap: 1rem; text-align: left; }
+.note-form label { display: grid; align-content: start; gap: 0.35rem; font-family: var(--condensed); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.85rem; color: var(--sepia); }
+.note-form .optional { text-transform: none; letter-spacing: 0.02em; }
+.note-form input[type='text'], .note-form input[type='email'], .note-form textarea {
+  font: inherit; font-family: var(--serif); font-size: 1.05rem; letter-spacing: normal; text-transform: none; color: var(--ink);
+  background: var(--card); border: 1px solid var(--line); border-radius: 2px; padding: 0.6rem 0.75rem; width: 100%;
+}
+.note-form textarea { resize: vertical; min-height: 8rem; }
+.note-form input:focus-visible, .note-form textarea:focus-visible { outline: 2px solid var(--sepia); outline-offset: 1px; border-color: var(--sepia); }
+.note-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; }
+.note-form .note-check { display: flex; align-items: flex-start; gap: 0.6rem; font-family: var(--serif); font-size: 1rem; letter-spacing: normal; text-transform: none; color: var(--ink); }
+.note-check input { margin-top: 0.3rem; accent-color: var(--accent); }
+.note-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.note-form button { justify-self: center; cursor: pointer; }
+.note-form button:disabled { opacity: 0.6; cursor: default; }
+.note-status { margin: 0; text-align: center; min-height: 1.5em; }
+.note-thanks { text-align: center; font-size: 1.15rem; font-style: italic; }
+
 .author { text-align: center; }
 .dedication { font-style: italic; color: var(--ink-soft); margin-top: 1.5rem !important; }
 

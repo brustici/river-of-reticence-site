@@ -42,6 +42,44 @@ export const directSale = {
   retailersHeading: 'Or Order from Your Favorite Book Store',
 };
 
+// "Loved the Book?" section: review buttons plus a private note to Geri.
+// `reviewLinks` send GA a `review_click` event with `site` = id. Add Goodreads
+// once the book has a page there (none as of Nov 2026).
+// `noteForm` posts to a Google Form: responses land in its linked Sheet and
+// its editors get an email per note. `action` is the form's .../formResponse
+// URL and each field is its `entry.<id>` (read them off a pre-filled link).
+// `okToQuoteValue` must match the checkbox option's text exactly.
+// null hides the form; the section shows as long as there are review links.
+export const lovedTheBook: {
+  heading: string;
+  intro: string;
+  reviewHeading: string;
+  reviewLinks: { id: string; name: string; url: string }[];
+  noteHeading: string;
+  noteIntro: string;
+  noteForm: null | {
+    action: string;
+    fields: { name: string; town: string; email: string; note: string; okToQuote: string };
+    okToQuoteValue: string;
+  };
+} = {
+  heading: 'Loved the Book?',
+  intro: 'Geri would love to hear from you, and a review helps other readers find the book.',
+  reviewHeading: 'Leave a Review Where Readers Shop',
+  reviewLinks: [
+    { id: 'amazon', name: 'Amazon', url: 'https://www.amazon.com/s?k=9798993956701&i=stripbooks' },
+    { id: 'barnes_noble', name: 'Barnes & Noble', url: 'https://www.barnesandnoble.com/w/river-of-reticence-geril-miller/1151197976?ean=9798993956701' },
+  ],
+  noteHeading: 'Send Geri a Note',
+  noteIntro: 'Notes go straight to Geri. Your email address is never shown on the site.',
+  // Google Form "Notes for Geri - River of Reticence" (built by google/notes-form-setup.gs).
+  noteForm: {
+    action: 'https://docs.google.com/forms/d/e/1FAIpQLSe1H8DDqSToMUSjIjYxsllxNFAhYhHn4-uAy_AkTtU15aN6xA/formResponse',
+    fields: { name: 'entry.1752163531', town: 'entry.1509879547', email: 'entry.1064989610', note: 'entry.1745024631', okToQuote: 'entry.1620119265' },
+    okToQuoteValue: 'Yes',
+  },
+};
+
 // Buy links. Add a store only once it has a real URL.
 // TODO: the Amazon link is an ISBN search; swap in the direct /dp/ product URL when available.
 // `id` is sent to Google Analytics as the `store` param of the buy_click event.

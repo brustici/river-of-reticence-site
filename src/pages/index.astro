@@ -3,8 +3,10 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import cover from '../assets/cover.jpg';
 import {
-  book, directSale, retailers, formats, excerpt, reviews, authorInfo, newsletter,
+  book, directSale, retailers, formats, excerpt, reviews, authorInfo, newsletter, lovedTheBook,
 } from '../data/site';
+
+const noteForm = lovedTheBook.noteForm;
 import { homeJsonLd } from '../data/seo';
 
 const title = `${book.title}: ${book.subtitle} by ${book.author}`;
@@ -84,6 +86,43 @@ const description = 'A dual-perspective suspense novel set in 1960s–80s small-
     </dl>
   </section>
 
+  {(lovedTheBook.reviewLinks.length > 0 || noteForm) && (
+    <section id="loved" class="section loved">
+      <div class="loved-inner">
+        <h2>{lovedTheBook.heading}</h2>
+        <p class="loved-intro">{lovedTheBook.intro}</p>
+        {lovedTheBook.reviewLinks.length > 0 && (
+          <>
+            <h3 class="buy-heading">{lovedTheBook.reviewHeading}</h3>
+            <ul class="retailers">
+              {lovedTheBook.reviewLinks.map((l) => (
+                <li><a class="btn btn-ghost" href={l.url} data-review={l.id} target="_blank" rel="noopener">{l.name}</a></li>
+              ))}
+            </ul>
+          </>
+        )}
+        {noteForm && (
+          <>
+            <h3 class="buy-heading">{lovedTheBook.noteHeading}</h3>
+            <p class="loved-intro">{lovedTheBook.noteIntro}</p>
+            <form class="note-form" id="note-form" action={noteForm.action} method="POST">
+              <div class="note-row">
+                <label><span>Your name</span> <input type="text" name={noteForm.fields.name} autocomplete="given-name" required /></label>
+                <label><span>Town <span class="optional">(optional)</span></span> <input type="text" name={noteForm.fields.town} autocomplete="address-level2" placeholder="e.g. Marquette, MI" /></label>
+              </div>
+              <label><span>Email <span class="optional">(optional, so Geri can write back)</span></span> <input type="email" name={noteForm.fields.email} autocomplete="email" /></label>
+              <label><span>Your note</span> <textarea name={noteForm.fields.note} rows="6" required></textarea></label>
+              <label class="note-check"><input type="checkbox" name={noteForm.fields.okToQuote} value={noteForm.okToQuoteValue} /> It’s OK to quote my note on this website, with my first name and town.</label>
+              <div class="note-trap" aria-hidden="true"><label>Leave this empty <input type="text" id="note-trap" tabindex="-1" autocomplete="off" /></label></div>
+              <button class="btn btn-primary" type="submit">Send</button>
+              <p class="note-status" id="note-status" role="status"></p>
+            </form>
+          </>
+        )}
+      </div>
+    </section>
+  )}
+
   <section id="author" class="section prose-section author">
     <h2>About the Author</h2>
     <p>{authorInfo.teaser}</p>
@@ -98,3 +137,37 @@ const description = 'A dual-perspective suspense novel set in 1960s–80s small-
     </section>
   )}
 </Base>
+
+<script>
+  // Post the note to the Google Form in the background so the reader stays on
+  // the page. Google's endpoint sends no CORS headers, so the response is opaque:
+  // only a network failure is detectable. Without JS the form posts normally.
+  const form = document.getElementById('note-form') as HTMLFormElement | null;
+  const status = document.getElementById('note-status');
+  const trap = document.getElementById('note-trap') as HTMLInputElement | null;
+  const thank = () => {
+    const p = document.createElement('p');
+    p.className = 'note-thanks';
+    p.textContent = 'Thank you! Your note is on its way to Geri.';
+    form!.replaceWith(p);
+  };
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (trap?.value) return thank(); // bots fill the hidden field
+    const button = form.querySelector('button')!;
+    button.disabled = true;
+    if (status) status.textContent = 'Sending…';
+    try {
+      await fetch(form.action, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>),
+      });
+      (window as any).gtag?.('event', 'note_submit');
+      thank();
+    } catch {
+      button.disabled = false;
+      if (status) status.textContent = 'Sorry, that didn’t send. Please check your connection and try again.';
+    }
+  });
+</script>
