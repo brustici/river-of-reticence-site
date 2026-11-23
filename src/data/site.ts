@@ -80,7 +80,8 @@ export const lovedTheBook: {
   // Google Form "Notes for Geri - River of Reticence" (built by google/notes-form-setup.gs).
   noteForm: {
     action: 'https://docs.google.com/forms/d/e/1FAIpQLSe1H8DDqSToMUSjIjYxsllxNFAhYhHn4-uAy_AkTtU15aN6xA/formResponse',
-    fields: { name: 'entry.1752163531', town: 'entry.1509879547', email: 'entry.1064989610', note: 'entry.1745024631', okToQuote: 'entry.1620119265' },
+    fields: { name: 'entry.1752163531', town: 'entry.1509879547', email: 'entry.1064989610', note: 'entry.1745024631', okToQuote: 'entry.1620119265',
+      trap: 'entry.1629833418', check: 'entry.27496157' },
     okToQuoteValue: 'Yes',
   },
 };
