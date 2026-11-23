@@ -98,10 +98,12 @@ function addSpamFields() {
   const form = noteForm_();
   const byTitle = {};
   form.getItems().forEach((item) => { byTitle[item.getTitle()] = item; });
-  const trap = (byTitle[TRAP_TITLE] || form.addTextItem().setTitle(TRAP_TITLE)
-    .setHelpText('Hidden on the website. Should always be empty.')).asTextItem();
-  const check = (byTitle[CHECK_TITLE] || form.addTextItem().setTitle(CHECK_TITLE)
-    .setHelpText('Filled in by the website. Do not edit.')).asTextItem();
+  // Reuse the questions if a previous run added them (getItems() returns plain
+  // Items, hence asTextItem(); addTextItem() already returns a TextItem).
+  const trap = byTitle[TRAP_TITLE] ? byTitle[TRAP_TITLE].asTextItem()
+    : form.addTextItem().setTitle(TRAP_TITLE).setHelpText('Hidden on the website. Should always be empty.');
+  const check = byTitle[CHECK_TITLE] ? byTitle[CHECK_TITLE].asTextItem()
+    : form.addTextItem().setTitle(CHECK_TITLE).setHelpText('Filled in by the website. Do not edit.');
 
   const prefilled = form.createResponse()
     .withItemResponse(trap.createResponse('x'))
