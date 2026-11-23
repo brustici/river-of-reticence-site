@@ -49,6 +49,8 @@ export const directSale = {
 // its editors get an email per note. `action` is the form's .../formResponse
 // URL and each field is its `entry.<id>` (read them off a pre-filled link).
 // `okToQuoteValue` must match the checkbox option's text exactly.
+// `trap` and `check` are the hidden spam-filter fields added by the script's
+// addSpamFields(); the script's emailNote() skips notes that fail them.
 // null hides the form; the section shows as long as there are review links.
 export const lovedTheBook: {
   heading: string;
@@ -59,7 +61,10 @@ export const lovedTheBook: {
   noteIntro: string;
   noteForm: null | {
     action: string;
-    fields: { name: string; town: string; email: string; note: string; okToQuote: string };
+    fields: {
+      name: string; town: string; email: string; note: string; okToQuote: string;
+      trap?: string; check?: string;
+    };
     okToQuoteValue: string;
   };
 } = {

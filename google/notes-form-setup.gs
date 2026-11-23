@@ -68,11 +68,100 @@ function setup() {
     "  },");
 }
 
+// ---------------------------------------------------------------------------
+// Spam filtering
+//
+// The website sends two hidden fields with every note:
+//   Website     a trap the reader never sees; bots that fill every field fill it.
+//   Form check  set by the page's script at send time to "v1.<seconds on page>".
+//               Bots that post straight to the form (no page, no script) leave it
+//               empty or malformed.
+// emailNote() also scores the text itself. A note judged spam is not emailed;
+// it stays in the Sheet with the reason in the "Spam filter" column.
+//
+// One-time upgrade for a form made before spam filtering: pick `addSpamFields`
+// -> Run, then copy the two new entry ids from the log into src/data/site.ts
+// (lovedTheBook.noteForm.fields.trap / .check).
+// ---------------------------------------------------------------------------
+
+const TRAP_TITLE = 'Website';
+const CHECK_TITLE = 'Form check';
+const MIN_SECONDS = 3; // faster than this is a bot, not a reader
+
+function noteForm_() {
+  const trigger = ScriptApp.getProjectTriggers().filter((t) => t.getHandlerFunction() === 'emailNote')[0];
+  if (!trigger) throw new Error('No emailNote trigger: run setup first.');
+  return FormApp.openById(trigger.getTriggerSourceId());
+}
+
+function addSpamFields() {
+  const form = noteForm_();
+  const byTitle = {};
+  form.getItems().forEach((item) => { byTitle[item.getTitle()] = item; });
+  const trap = (byTitle[TRAP_TITLE] || form.addTextItem().setTitle(TRAP_TITLE)
+    .setHelpText('Hidden on the website. Should always be empty.')).asTextItem();
+  const check = (byTitle[CHECK_TITLE] || form.addTextItem().setTitle(CHECK_TITLE)
+    .setHelpText('Filled in by the website. Do not edit.')).asTextItem();
+
+  const prefilled = form.createResponse()
+    .withItemResponse(trap.createResponse('x'))
+    .withItemResponse(check.createResponse('x'))
+    .toPrefilledUrl();
+  const ids = (prefilled.match(/entry\.\d+/g) || []);
+  if (ids.length !== 2) throw new Error('Expected 2 entry ids, got: ' + prefilled);
+  Logger.log('Add these to lovedTheBook.noteForm.fields in src/data/site.ts:\n' +
+    "  trap: '" + ids[0] + "', check: '" + ids[1] + "'");
+}
+
+// Returns the reason a note looks like spam, or '' if it looks like a reader.
+function spamReason_(answers) {
+  if (String(answers[TRAP_TITLE] || '').trim()) return 'hidden field filled';
+  const check = String(answers[CHECK_TITLE] || '').trim();
+  const m = check.match(/^v1\.(\d+)$/);
+  if (!m) return 'not sent from the website form';
+  if (Number(m[1]) < MIN_SECONDS) return 'sent ' + m[1] + 's after the page loaded';
+
+  const note = String(answers['Your note'] || '');
+  const name = String(answers['Your name'] || '').trim();
+  const reasons = [];
+  let score = 0;
+  const words = note.match(/[a-z]+/gi) || [];
+  const longWords = words.filter((w) => w.length > 11).length;
+  // Keyboard-mash text: a run of 6+ consonants is near-certain; mostly very long
+  // "words" is only a hint, since short real notes can be ("Extraordinarily
+  // atmospheric").
+  if (/[bcdfghjklmnpqrstvwxyz]{6,}/i.test(note)) {
+    score += 2; reasons.push('gibberish text');
+  } else if (words.length && longWords / words.length >= 0.5) {
+    score += 1; reasons.push('mostly very long words');
+  }
+  if (/https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|info|ru|xyz|top|biz)\b/i.test(note)) {
+    score += 1; reasons.push('link in note');
+  }
+  // Generated names such as "LeonardstomeBJ": one word ending in two capitals.
+  if (/^[A-Z][a-z]{3,}[A-Z]{2,}$/.test(name)) { score += 1; reasons.push('bot-style name'); }
+  return score >= 2 ? reasons.join(', ') : '';
+}
+
+// Writes the spam reason next to the response's row in the linked Sheet.
+function markSpam_(form, reason) {
+  try {
+    const sheet = SpreadsheetApp.openById(form.getDestinationId()).getSheets()[0];
+    const lastCol = sheet.getLastColumn();
+    const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    let col = headers.indexOf('Spam filter') + 1;
+    if (!col) { col = lastCol + 1; sheet.getRange(1, col).setValue('Spam filter'); }
+    sheet.getRange(sheet.getLastRow(), col).setValue(reason);
+  } catch (err) { /* the note is still in the Sheet; only the label is missing */ }
+}
+
 // Runs on every new note: emails it, with Reply going to the reader when they
-// left an address.
+// left an address. Notes that look like spam are labelled in the Sheet instead.
 function emailNote(e) {
   const answers = {};
   e.response.getItemResponses().forEach((r) => { answers[r.getItem().getTitle()] = r.getResponse(); });
+  const spam = spamReason_(answers);
+  if (spam) return markSpam_(e.source, 'Spam: ' + spam);
   const name = answers['Your name'] || 'A reader';
   const town = answers['Town'] || '';
   const from = String(answers['Email'] || '').trim();

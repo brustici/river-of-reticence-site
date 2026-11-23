@@ -113,7 +113,8 @@ const description = 'A dual-perspective suspense novel set in 1960s–80s small-
               <label><span>Email <span class="optional">(optional, so Geri can write back)</span></span> <input type="email" name={noteForm.fields.email} autocomplete="email" /></label>
               <label><span>Your note</span> <textarea name={noteForm.fields.note} rows="6" required></textarea></label>
               <label class="note-check"><input type="checkbox" name={noteForm.fields.okToQuote} value={noteForm.okToQuoteValue} /> It’s OK to quote my note on this website, with my first name and town.</label>
-              <div class="note-trap" aria-hidden="true"><label>Leave this empty <input type="text" id="note-trap" tabindex="-1" autocomplete="off" /></label></div>
+              <div class="note-trap" aria-hidden="true"><label>Leave this empty <input type="text" id="note-trap" name={noteForm.fields.trap} tabindex="-1" autocomplete="off" /></label></div>
+              {noteForm.fields.check && <input type="hidden" id="note-check" name={noteForm.fields.check} value="" />}
               <button class="btn btn-primary" type="submit">Send</button>
               <p class="note-status" id="note-status" role="status"></p>
             </form>
@@ -145,6 +146,10 @@ const description = 'A dual-perspective suspense novel set in 1960s–80s small-
   const form = document.getElementById('note-form') as HTMLFormElement | null;
   const status = document.getElementById('note-status');
   const trap = document.getElementById('note-trap') as HTMLInputElement | null;
+  // Seconds on the page, checked by the Google-side spam filter (too fast or
+  // missing = bot). Posting without JS leaves it empty, so those notes get flagged.
+  const check = document.getElementById('note-check') as HTMLInputElement | null;
+  const loadedAt = Date.now();
   const thank = () => {
     const p = document.createElement('p');
     p.className = 'note-thanks';
@@ -154,6 +159,7 @@ const description = 'A dual-perspective suspense novel set in 1960s–80s small-
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (trap?.value) return thank(); // bots fill the hidden field
+    if (check) check.value = 'v1.' + Math.floor((Date.now() - loadedAt) / 1000);
     const button = form.querySelector('button')!;
     button.disabled = true;
     if (status) status.textContent = 'Sending…';
